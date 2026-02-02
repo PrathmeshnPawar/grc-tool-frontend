@@ -1,5 +1,6 @@
 "use client";
 import { createTheme } from '@mui/material/styles';
+import type {} from '@mui/x-data-grid/themeAugmentation'
 
 const theme = createTheme({
   palette: {
@@ -35,6 +36,26 @@ const theme = createTheme({
     },
   },
   components: {
+    MuiDataGrid: {
+      styleOverrides: {
+        root: {
+          border: '1px solid #E2E8F0', // Matches your divider color
+          borderRadius: '8px',          // Matches your shape.borderRadius
+          backgroundColor: '#FFFFFF',
+          '& .MuiDataGrid-columnHeaders': {
+            backgroundColor: '#F8FAFC', // Matches background.default
+            borderBottom: '1px solid #E2E8F0',
+            fontWeight: 700,
+          },
+          '& .MuiDataGrid-cell': {
+            borderBottom: '1px solid #E2E8F0',
+          },
+          '& .MuiDataGrid-footerContainer': {
+            borderTop: '1px solid #E2E8F0',
+          },
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
