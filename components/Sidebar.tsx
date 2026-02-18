@@ -1,15 +1,18 @@
 // components/Sidebar.tsx
 import Link from 'next/link';
-import { LayoutDashboard, ShieldAlert, FileText, ClipboardCheck } from 'lucide-react';
+import { LayoutDashboard, ShieldAlert, FileText, ClipboardCheck,OctagonAlert, Shield } from 'lucide-react';
 
 const menuItems = [
   { name: 'Overview', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Risk Management', href: '/dashboard/risks', icon: ShieldAlert },
-  { name: 'Policies', href: '/dashboard/policies', icon: FileText },
-  { name: 'Audit Logs', href: '/dashboard/audit-logs', icon: ClipboardCheck },
+  { name: 'Risk Management', href: '/risks', icon: ShieldAlert },
+  { name: 'Policies', href: '/policies', icon: FileText },
+  {name: 'Incidents', href:'/incidents', icon: OctagonAlert },
+  { name: 'Audits', href: '/audits', icon: ClipboardCheck },
+  {name: 'Frameworks',href:'/compliance_frameworks', icon: Shield },
+  { name: 'Audit Logs', href: '/audit-logs', icon: ClipboardCheck },
 ];
 
-export default function Sidebar() {
+export default function Sidebar() { 
   return (
     <aside className="w-64 bg-white border-r border-zinc-200 flex flex-col">
       <div className="p-6 font-bold text-xl text-blue-600">Arihant GRC</div>

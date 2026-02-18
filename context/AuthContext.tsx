@@ -7,7 +7,8 @@ import { fetcher } from '@/lib/api-client';
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  login: () => void; // Define the function signature
+  login: () => void;
+  logout: () => void; // Define the function signature
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -28,9 +29,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     window.location.href = 'http://localhost:8085/oauth2/authorization/google';
   };
 
+  const logout = () => {
+  // 1. Clear local state
+  setUser(null);
+  // 2. Redirect to Spring Boot logout endpoint
+  // This endpoint is provided by Spring Security by default
+  window.location.href = 'http://localhost:8085/api/logout';
+};
+
   return (
     // 3. Pass login into the value object
-    <AuthContext.Provider value={{ user, loading, login }}>
+    <AuthContext.Provider value={{ user, loading, login ,logout}}>
       {children}
     </AuthContext.Provider>
   );

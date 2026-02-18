@@ -14,7 +14,10 @@ export async function fetcher<T>(endpoint: string, options: RequestInit = {}): P
   if (res.status === 401) {
     // If the backend returns 401, the user is unauthenticated
     throw new Error('UNAUTHORIZED');
+    
   }
+
+  
 
   if (!res.ok) throw new Error('API_ERROR');
   return res.json();

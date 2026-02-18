@@ -29,10 +29,17 @@ export default function AuditLogsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetcher<AuditLog[]>('/api/audit-logs')
+    fetcher<AuditLog[]>('/api/audits/audit-logs')
       .then(setLogs)
       .finally(() => setLoading(false));
   }, []);
+
+  const refreshLogs = () => {
+  setLoading(true);
+  fetcher<AuditLog[]>('/api/audit-logs')
+    .then(setLogs)
+    .finally(() => setLoading(false));
+};
 
   return (
     <Box sx={{ height: 600, width: '100%', p: 3 }}>
@@ -52,6 +59,9 @@ export default function AuditLogsPage() {
           '& .MuiDataGrid-cell:hover': { color: 'primary.main' },
         }}
       />
+      <button onClick={refreshLogs} className="btn-secondary">
+        Refresh Feed
+      </button>
     </Box>
   );
 }
