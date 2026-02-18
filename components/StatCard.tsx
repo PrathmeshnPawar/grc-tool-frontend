@@ -1,7 +1,8 @@
 // components/StatCard.tsx
+import { StatCardProps } from '@/lib/types';
 import { Paper, Typography, Box } from '@mui/material';
 
-export default function StatCard({ title, value, icon, description, color }: any) {
+export default function StatCard({ title, value, icon, description, color }: StatCardProps) {
   return (
     <Paper elevation={0} sx={{ p: 3, border: '1px solid', borderColor: 'divider', borderRadius: 2 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>

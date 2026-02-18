@@ -8,6 +8,7 @@ import { Save, ArrowLeft, AlertCircle, User as UserIcon } from "lucide-react";
 import { fetcher } from "@/lib/api-client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import DynamicBreadcrumbs from '@/components/DynamicBreadcrumbs';
 
 export default function NewIncidentPage() {
   const router = useRouter();
@@ -70,6 +71,7 @@ export default function NewIncidentPage() {
 
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
+       <DynamicBreadcrumbs />
       <Box sx={{ mb: 3 }}>
         <Button component={Link} href="/incidents" startIcon={<ArrowLeft size={20} />} sx={{ mb: 2 }}>
           Back to Register

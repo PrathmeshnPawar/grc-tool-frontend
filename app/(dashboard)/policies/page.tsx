@@ -14,18 +14,10 @@ import {
 // Added FileText icon for the view button
 import { Plus, AlertCircle, CheckCircle2, FileText } from "lucide-react";
 import { useRouter } from "next/navigation";
+import DynamicBreadcrumbs from "@/components/DynamicBreadcrumbs";
+import { Policy } from "@/lib/types";
 
-interface Policy {
-  id: string;
-  title: string;
-  version: string;
-  status: string;
-  description: string;
-  content: string;
-  isProcessed: boolean;
-  lastUpdated: string;
-  filePath: string | null;
-}
+
 
 export default function PoliciesPage() {
   const [policies, setPolicies] = useState<Policy[]>([]);
@@ -169,6 +161,7 @@ export default function PoliciesPage() {
 
   return (
     <Box sx={{ p: 3 }}>
+       <DynamicBreadcrumbs />
       <Stack
         direction="row"
         justifyContent="space-between"

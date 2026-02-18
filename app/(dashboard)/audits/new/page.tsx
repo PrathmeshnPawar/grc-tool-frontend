@@ -17,18 +17,9 @@ import { ClipboardCheck, ArrowLeft } from "lucide-react";
 import { fetcher } from "@/lib/api-client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import DynamicBreadcrumbs from "@/components/DynamicBreadcrumbs";
+import { ApiResponse, Audit, Risk, User ,} from "@/lib/types";
 
-interface Audit {
-  id: string;
-  name: string;
-  start_date: string;
-  end_date: string;
-  status: string;
-  lead_auditor_id: string | null;
-  risk_id: string | null;
-  success: string;
-  error: string;
-}
 
 export default function NewAuditPage() {
   const router = useRouter();
@@ -37,13 +28,13 @@ export default function NewAuditPage() {
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [leadAuditorId, setLeadAuditorId] = useState("");
   const [selectedRiskId, setSelectedRiskId] = useState("");
-  const [risks, setRisks] = useState<any[]>([]);
-  const [users, setUsers] = useState<any[]>([]); // New state for Auditors
+  const [risks, setRisks] = useState<Risk[]>([]);
+  const [users, setUsers] = useState<User[]>([]); // New state for Auditors
   const [submitting, setSubmitting] = useState(false);
 
   // Load Risks and Users on mount
   useEffect(() => {
-    Promise.all([fetcher<any[]>("/api/risks"), fetcher<any[]>("/api/users")])
+    Promise.all([fetcher<Risk[]>("/api/risks"), fetcher<User[]>("/api/users")])
       .then(([riskData, userData]) => {
         // Your fetcher now returns the raw array directly
         // If it's an array, we set it. No more .success check
@@ -53,34 +44,47 @@ export default function NewAuditPage() {
       .catch((err) => console.error("Loading failed:", err));
   }, []);
 
-  const handleSubmit = async () => {
-    if (!name || !startDate || !endDate) return;
+ const handleSubmit = async () => {
+  // 1. Initial Guard: Block empty submissions
+  if (!name || !startDate || !endDate) return;
 
-    setSubmitting(true);
-    const result = await fetcher<Audit>("/api/audits", {
+  setSubmitting(true);
+  try {
+    // 2. Wizard Move: Pass the ApiResponse wrapper to the fetcher
+    // Note: I renamed 'start_date' to 'startDate' to match standard Java DTOs
+    const result = await fetcher<ApiResponse<Audit>>("/api/audits", {
       method: "POST",
       body: JSON.stringify({
         name,
-        start_date: startDate.toISOString().split("T")[0],
-        end_date: endDate.toISOString().split("T")[0],
+        startDate: startDate.toISOString().split("T")[0],
+        endDate: endDate.toISOString().split("T")[0],
         status: "PLANNED",
-        lead_auditor_id: leadAuditorId || null, // Sends the selected ID
-        risk_id: selectedRiskId || null,
+        leadAuditorId: leadAuditorId || null, 
+        riskId: selectedRiskId || null,
       }),
     });
 
+    // 3. Logic handling based on the Result Wrapper
     if (result.success) {
       router.push("/audits");
     } else if (result.error === "UNAUTHORIZED") {
       router.push("/");
     } else {
-      alert("Creation failed: " + result.error);
+      // Provide a fallback for the error message to prevent blank alerts
+      alert("Creation failed: " + (result.error || "Server-side error occurred"));
     }
+  } catch (error) {
+    console.error("Critical API Error:", error);
+    alert("Network error: Unable to reach the GRC backend.");
+  } finally {
+    // 4. Always reset loading state, even on catch
     setSubmitting(false);
-  };
+  }
+};
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <DynamicBreadcrumbs />
       <Container maxWidth="md">
         <Box sx={{ mb: 4, display: "flex", alignItems: "center", gap: 2 }}>
           <Button
@@ -148,7 +152,7 @@ export default function NewAuditPage() {
               </MenuItem>
               {risks.map((risk) => (
                 <MenuItem key={risk.id} value={risk.id}>
-                  {risk.title || risk.name}
+                  {risk.title || risk.title}
                 </MenuItem>
               ))}
             </TextField>

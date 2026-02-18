@@ -6,6 +6,8 @@ import { Box, Typography, MenuItem, Select, Paper, Button, Stack } from '@mui/ma
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 // Added Plus icon for the new trigger
 import { ArrowLeft, Plus } from 'lucide-react'; 
+import DynamicBreadcrumbs from '@/components/DynamicBreadcrumbs';
+import { ComplianceControl } from '@/lib/types';
 
 export default function FrameworkControlsPage() {
   const { id } = useParams(); 
@@ -16,7 +18,7 @@ export default function FrameworkControlsPage() {
   const loadControls = async () => {
     setLoading(true);
     try {
-      const data = await fetcher<any[]>(`/api/compliance/frameworks/${id}/controls`);
+      const data = await fetcher<ComplianceControl[]>(`/api/compliance/frameworks/${id}/controls`);
       setControls(data || []);
     } catch (err) {
       console.error("Failed to load controls:", err);
@@ -68,6 +70,7 @@ export default function FrameworkControlsPage() {
   return (
     <Box sx={{ p: 4 }}>
       {/* Header Stack: Groups Navigation, Title, and Actions */}
+       <DynamicBreadcrumbs />
       <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
         <Stack direction="row" spacing={2} alignItems="center">
           <Button 

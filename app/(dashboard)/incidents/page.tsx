@@ -5,19 +5,11 @@ import { fetcher } from '@/lib/api-client';
 import { Chip, Box, Typography, Button, Stack, Paper } from '@mui/material';
 import { RefreshCw, Plus, AlertCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import DynamicBreadcrumbs from '@/components/DynamicBreadcrumbs';
+import { Incident } from '@/lib/types';
+
 
 // matches your Java record/entity strictly
-interface Incident {
-  id: string;
-  title: string;
-  description: string; 
-  severity: string;   
-  status: string;
-  dateReported: string | null;
-  reportedById?: string; 
-  reportedBy: string;
-  riskIds: string; 
-}
 
 // Senior Wizard Logic: Map enums to UI priorities
 const getSeverityColor = (severity: string): "error" | "warning" | "info" | "success" | "default" => {
@@ -116,6 +108,7 @@ export default function IncidentsPage() {
 
   return (
     <Box sx={{ p: 3, width: '100%' }}>
+       <DynamicBreadcrumbs />
       <Stack direction="row" justifyContent="space-between" alignItems="center" mb={3}>
         <Box>
           <Typography variant="h4" fontWeight="bold" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>

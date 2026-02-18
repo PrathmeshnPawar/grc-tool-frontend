@@ -8,6 +8,8 @@ import { Save, ArrowLeft, UploadCloud, FileText } from "lucide-react";
 import { fetcher } from "@/lib/api-client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import DynamicBreadcrumbs from '@/components/DynamicBreadcrumbs';
+import { ComplianceFramework, Policy, User } from '@/lib/types';
 
 export default function NewPolicyPage() {
   const router = useRouter();
@@ -20,14 +22,14 @@ export default function NewPolicyPage() {
   const [frameworkId, setFrameworkId] = useState("");
   const [file, setFile] = useState<File | null>(null);
   
-  const [users, setUsers] = useState<any[]>([]);
-  const [frameworks, setFrameworks] = useState<any[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
+  const [frameworks, setFrameworks] = useState<ComplianceFramework[]>([]);
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     Promise.all([
-      fetcher<any[]>('/api/users'),
-      fetcher<any[]>('/api/compliance/frameworks')
+      fetcher<User[]>('/api/users'),
+      fetcher<[]>('/api/compliance/frameworks')
     ]).then(([userData, frameworkData]) => {
       if (Array.isArray(userData)) setUsers(userData);
       if (Array.isArray(frameworkData)) setFrameworks(frameworkData);
@@ -45,7 +47,7 @@ export default function NewPolicyPage() {
     try {
       if (tabIndex === 0) {
         // --- Manual JSON Path ---
-        const result = await fetcher<any>('/api/policies', {
+        const result = await fetcher<Policy[]>('/api/policies', {
           method: 'POST',
           body: JSON.stringify({
             title, description, content, version,
@@ -91,6 +93,7 @@ export default function NewPolicyPage() {
 
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
+       <DynamicBreadcrumbs />
       <Box sx={{ mb: 3 }}>
         <Button component={Link} href="/policies" startIcon={<ArrowLeft size={20} />} sx={{ mb: 2 }}>
           Back to Register
@@ -113,7 +116,7 @@ export default function NewPolicyPage() {
               </TextField>
 
               <TextField select label="Compliance Framework" fullWidth required value={frameworkId} onChange={e => setFrameworkId(e.target.value)}>
-                {frameworks.map(f => <MenuItem key={f.id} value={f.id}>{f.name || f.title}</MenuItem>)}
+                {frameworks.map(f => <MenuItem key={f.id} value={f.id}>{f.name || f.name}</MenuItem>)}
               </TextField>
             </Stack>
 

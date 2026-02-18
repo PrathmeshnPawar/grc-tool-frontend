@@ -1,5 +1,11 @@
 // lib/api.ts
-export const apiFetch = async (endpoint: string, options: any = {}) => {
+
+export interface FetchOptions extends RequestInit {
+  // Add custom properties here if needed, like 'timeout' or 'token'
+  params?: Record<string, string | number | boolean>; 
+}
+
+export const apiFetch = async (endpoint: string, options: FetchOptions = {}) => {
   const res = await fetch(`http://localhost:8085${endpoint}`, {
     ...options,
     // REQUIRED: This tells the browser to include the JSESSIONID cookie

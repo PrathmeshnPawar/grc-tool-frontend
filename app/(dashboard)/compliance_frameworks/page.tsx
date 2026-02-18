@@ -6,6 +6,7 @@ import { Box, Typography, Paper, Button, Stack } from '@mui/material';
 // Added Plus icon for the create action
 import { Shield, RefreshCw, Plus } from 'lucide-react'; 
 import { useRouter } from 'next/navigation';
+import DynamicBreadcrumbs from '@/components/DynamicBreadcrumbs';
 
 export default function FrameworksPage() {
   const [frameworks, setFrameworks] = useState<any[]>([]);
@@ -49,6 +50,7 @@ export default function FrameworksPage() {
 
   return (
     <Box sx={{ p: 4 }}>
+       <DynamicBreadcrumbs />
       {/* Updated Stack to include the Create action */}
       <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
         <Typography variant="h4" fontWeight="bold">Compliance Frameworks</Typography>

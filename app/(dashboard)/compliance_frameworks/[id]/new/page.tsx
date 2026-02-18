@@ -7,6 +7,7 @@ import {
 } from '@mui/material';
 import Grid from '@mui/material/Grid'; // Using modern Grid2 as per your standard
 import { Save, ArrowLeft, ClipboardCheck } from 'lucide-react';
+import DynamicBreadcrumbs from '@/components/DynamicBreadcrumbs';
 
 export default function CreateControlPage() {
   const { id: frameworkId } = useParams();
@@ -40,6 +41,7 @@ export default function CreateControlPage() {
 
   return (
     <Box sx={{ p: 4, maxWidth: 800, margin: '0 auto' }}>
+         <DynamicBreadcrumbs />
       <Button 
         startIcon={<ArrowLeft size={20} />} 
         onClick={() => router.back()} 
@@ -52,7 +54,7 @@ export default function CreateControlPage() {
         Define New Compliance Control
       </Typography>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-        Create a specific requirement mapped to this framework's compliance posture.
+        Create a specific requirement mapped to this framework&apos;s compliance posture.
       </Typography>
       
       <Paper component="form" onSubmit={handleSubmit} sx={{ p: 4, borderRadius: 2 }}>

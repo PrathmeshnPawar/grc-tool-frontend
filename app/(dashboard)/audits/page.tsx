@@ -5,18 +5,11 @@ import { fetcher } from '@/lib/api-client';
 import { Chip, Box, Typography, Button, Stack } from '@mui/material';
 import { RefreshCw, Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import DynamicBreadcrumbs from '@/components/DynamicBreadcrumbs';
+import { Audit } from '@/lib/types';
 
 // 1. Interface matches the camelCase backend response payload
-interface Audit {
-  id: string;
-  name: string;
-  startDate: string; // Matches Java LocalDate
-  endDate: string;   // Matches Java LocalDate
-  status: string;
-  leadAuditorId: string | null;
-  leadAuditorName?: string; // Wizard Tip: Plan for displaying the name
-  createdAt: string; // Matches Java LocalDateTime
-}
+
 
 const columns: GridColDef[] = [
   { field: 'name', headerName: 'Audit Name', width: 250 },
@@ -97,6 +90,7 @@ export default function AuditsPage() {
 
   return (
     <Box sx={{ p: 3, width: '100%' }}>
+       <DynamicBreadcrumbs />
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
           Compliance Audit Register

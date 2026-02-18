@@ -8,15 +8,11 @@ import Grid from '@mui/material/Grid';
 import { ShieldCheck, AlertTriangle } from 'lucide-react';
 import { fetcher } from '@/lib/api-client';
 import { useRouter } from 'next/navigation';
+import DynamicBreadcrumbs from '@/components/DynamicBreadcrumbs';
+import { RISK_CATEGORIES } from '@/lib/types';
 
 // Wizard Tip: These should match your backend RiskCategory Enum exactly
-const RISK_CATEGORIES = [
-  'STRATEGIC',
-  'OPERATIONAL',
-  'FINANCIAL',
-  'COMPLIANCE',
- 
-];
+
 
 export default function NewRiskPage() {
   const router = useRouter();
@@ -62,6 +58,7 @@ export default function NewRiskPage() {
 
   return (
     <Container maxWidth="md">
+       <DynamicBreadcrumbs />
       <Box sx={{ mb: 4 }}>
         <Typography variant="h4" fontWeight="bold">Perform Risk Assessment</Typography>
         <Typography color="text.secondary">Quantify the potential impact and likelihood of this threat.</Typography>
